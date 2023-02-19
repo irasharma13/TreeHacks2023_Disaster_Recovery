@@ -48,19 +48,10 @@ class CommonMan extends StatelessWidget {
               SizedBox(height: 8),
               
               SizedBox(height: 48),
-              ButtonWidget(
-                text: 'Location',
-                icon: Icons.location_on,
-                onClicked:(){
-   Navigator.push(context, MaterialPageRoute(builder: (context) {
-     return const CommonMan(title: 'CommonMan');
-   }));
-                }
-
-              ),
-              SizedBox(height: 8),
               
-              SizedBox(height: 48),
+            
+              
+         
 
               ButtonWidget(
                 text: 'Chat',
