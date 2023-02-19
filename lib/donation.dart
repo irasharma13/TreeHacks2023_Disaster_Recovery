@@ -1,4 +1,4 @@
-/*mport 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'dart:io';
@@ -28,17 +28,17 @@ class DonationPage extends StatefulWidget {
 class _DonationPageState extends State<DonationPage> {
   bool _isCheckboxSelected = false;
 
-  Future<void> _submitDonation() async {
+  Future _submitDonation(BuildContext context) {
     if (_isCheckboxSelected) {
       // Send the user to the Checkbook API
-      String url = uri.parse("https://checkbook.io/v3/check/digital");
+      final url = Uri.parse("https://demo.checkbook.io/v3/check/digital");
       Map<String, String> headers = {"Content-type": "application/json"};
       String body = '{"recipient": "recipient@example.com", "amount": 10.0}';
-      http.Response response = await http.post(url.parse, headers: headers, body: body);
+      http.Response response = await http.post(url, headers: headers, body: body);
       if (response.statusCode == 200) {
         // Donation successful
         // Navigate to success screen
-        Navigator.pushNamed(context, "/donationSuccess");
+        Navigator.push(context, "/donationSuccess");
       } else {
         // Donation failed
         // Show error message
@@ -112,4 +112,4 @@ class _DonationPageState extends State<DonationPage> {
       ),
     );
   }
-}*/
+}
