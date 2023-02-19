@@ -9,12 +9,16 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
+import 'dart:convert';
 import 'package:treehacks2023/main.dart';
 import 'package:treehacks2023/Users.dart';
 import 'package:treehacks2023/CommonMan.dart';
 import 'package:treehacks2023/SearchResults.dart';
 
+var search_family_response;
+var name;
+var id;
+var img;
 
 
 Future main() async {
@@ -28,21 +32,30 @@ Future main() async {
 }
 
 class Search extends StatefulWidget {
+
   const Search({Key? key}) : super(key: key);
   @override
   _SearchState createState() => _SearchState();
 }
-Future _submitData(String text) async {
+Future _submitData(String text, BuildContext context) async {
   final url =
       Uri.parse('https://63f143675703e063fa5517ad.mockapi.io/search-family');
   try {
-    final response = await http.post(
+    search_family_response = await http.post(
       url,
       body: {'name': text},
     );
     // Handle success response
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
+    print('Response status: ${search_family_response.body}');
+    final jsonResponse = json.decode(search_family_response.body);
+
+   id = jsonResponse['id'];
+   name = jsonResponse['name'];
+
+    Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => SearchResults()),
+  );
   } catch (error) {
     // Handle error response
     print('Error: $error');
@@ -52,13 +65,15 @@ Future _submitImage(String imgUrl) async {
   final url =
       Uri.parse('https://63f143675703e063fa5517ad.mockapi.io/uploaded-image');
   try {
-    final response = await http.post(
+    final search_family_response = await http.post(
       url,
       body: {'image': imgUrl},
     );
     // Handle success response
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
+    print('Response status: ${search_family_response.statusCode}');
+    print('Response body: ${search_family_response.body}');
+    final jsonResponse = json.decode(search_family_response.body);
+    img = jsonResponse['image'];
   } catch (error) {
     // Handle error response
     print('Error: $error');
@@ -103,10 +118,8 @@ class _SearchState extends State<Search> {
                 ),
                 child: const Text('Search for Name'),
                 onPressed: () {
-  _submitData(_controller.text);
-  Navigator.push(context, MaterialPageRoute(builder: (context) {
-    return const SearchResults();
-  }));
+  _submitData(_controller.text, context);
+  
 }
 
               ),
@@ -170,3 +183,6 @@ class _SearchState extends State<Search> {
         },
       );
 }
+
+
+

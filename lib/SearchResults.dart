@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -14,6 +15,7 @@ import 'package:treehacks2023/main.dart';
 import 'package:treehacks2023/Users.dart';
 import 'package:treehacks2023/CommonMan.dart';
 import 'package:treehacks2023/search.dart';
+import 'package:treehacks2023/User.dart';
 
 
 
@@ -33,46 +35,29 @@ class SearchResults extends StatefulWidget {
   @override
   _SearchResultsState createState() => _SearchResultsState();
 }
-/*Future _submitData(String text) async {
-  final url =
-      Uri.parse('https://63f143675703e063fa5517ad.mockapi.io/search-family');
-  try {
-    final response = await http.post(
-      url,
-      body: {'name': text},
-    );
-    // Handle success response
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-  } catch (error) {
-    // Handle error response
-    print('Error: $error');
-  }
-}
-Future _submitImage(String imgUrl) async {
-  final url =
-      Uri.parse('https://63f143675703e063fa5517ad.mockapi.io/uploaded-image');
-  try {
-    final response = await http.post(
-      url,
-      body: {'image': imgUrl},
-    );
-    // Handle success response
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-  } catch (error) {
-    // Handle error response
-    print('Error: $error');
-  }
-}*/
+
 class _SearchResultsState extends State<SearchResults> {
   UploadTask? task;
   File? file;
   final TextEditingController _controller = TextEditingController();
   static final urlDownload = null;
+  static final image_id = id;
+  static final image_name = name;
+  static final image = img;
+
+  //static final response = search_family_response;
+
+    //'{"name": "sai", "id": 30}';
+  //Map<dynamic, dynamic> user = json.decode(response);
+
+
   @override
   Widget build(BuildContext context) {
-
+    print('1');
+    print('XXXXXXXXXXXXXXXXXXXX');
+     print(image_id);
+     print(image_name);
+     print(image);
     final IconData icon;
     final String text;
     return Scaffold(
@@ -90,7 +75,10 @@ class _SearchResultsState extends State<SearchResults> {
                 'Found',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              
+               /*Text('ID: ${user['id']}'),
+              Text('name: ${user['name']}'),*/
+               Text('User: ${image_name}'),
+               //Text('Image: ${image}'),
               
               SizedBox(height: 70),
               
@@ -109,3 +97,11 @@ class _SearchResultsState extends State<SearchResults> {
   
   
 }
+
+Future<String> getImageUrl(String imagePath) async {
+  Reference ref = FirebaseStorage.instance.ref().child(imagePath);
+  String downloadUrl = await ref.getDownloadURL();
+  
+  return downloadUrl;
+}
+
